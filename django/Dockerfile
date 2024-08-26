@@ -11,6 +11,8 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
+EXPOSE 8000
+
 COPY ./entrypoint.sh .
 RUN chmod +x entrypoint.sh
 

@@ -1,24 +1,51 @@
 version: '3.8'
 
 services:
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 443:443
+    depends_on:
+      - web
+    networks:
+      transcendence:
+    env_file:
+      - ./nginx/.env
+    restart: always
+    
   web:
     build: ./django
-    command: python manage.py runserver 0.0.0.0:8000
+    container_name: web
+    command: gunicorn --bind 0.0.0.0:8000 project_transcendence.wsgi:application
     volumes:
       - ./django/:/usr/src/app/
-    ports:
-      - 8000:8000
+    expose:
+      - "8000"
     env_file:
       - ./django/.env
     depends_on:
-      - db
-  db:
+      - postgresql
+    networks:
+      transcendence:
+    restart: always
+
+  postgresql:
     image: postgres:15
+    container_name: postgresql
     volumes:
       - db:/var/lib/postgresql/data/
     env_file:
       - ./postgresql/.env
+    networks:
+      transcendence:
+    restart: always
 
 
 volumes:
   db:
+
+networks:
+  transcendence:
+    driver: bridge
