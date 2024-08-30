@@ -11,8 +11,6 @@ services:
       - web
     networks:
       transcendence:
-    env_file:
-      - ./nginx/.env
     #restart: always
     
   web:
