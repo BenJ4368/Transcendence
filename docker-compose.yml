@@ -13,7 +13,7 @@ services:
       transcendence:
     env_file:
       - ./nginx/.env
-    restart: always
+    #restart: always
     
   web:
     build: ./django
@@ -21,15 +21,13 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 project_transcendence.wsgi:application
     volumes:
       - ./django/:/usr/src/app/
-    expose:
-      - "8000"
     env_file:
       - ./django/.env
     depends_on:
       - postgresql
     networks:
       transcendence:
-    restart: always
+    #restart: always
 
   postgresql:
     image: postgres:15
@@ -40,7 +38,7 @@ services:
       - ./postgresql/.env
     networks:
       transcendence:
-    restart: always
+    #restart: always
 
 
 volumes:
