@@ -1,28 +1,32 @@
-all:
+all: #Builds, then starts all containers. Entrypoint of ft_transcendence
 	@echo "Composing Transcendence..."
 	@sudo docker-compose up --build
 
-down:
-	@echo "Shutting down docker-composed containers..."
-	@sudo docker-compose down
+start: #Starts stopped containers, without re-building them
+	@echo "Starting containers..."
+	@sudo docker-compose up
 
-clean:
-	@echo "Stopping and removing containers, images, volumes and networks..."
+stop: #Stops containers, does not remove them
+	@echo "Stopping containers..."
+	@sudo docker-compose stop
+
+clean: #Stops and remove all containers, images, volumes and networks
+	@echo "Cleaning..."
 	@sudo docker stop $$(sudo docker ps -qa);\
 	 sudo docker rm $$(sudo docker ps -qa);\
 	 sudo docker rmi $$(sudo docker images -qa);\
 	 sudo docker volume rm $$(sudo docker volume ls -q);\
 	 sudo docker network rm $$(sudo docker network ls -q)
 
-list:
+list: #Lists all containers, images, volumes and networks. Running or not, used or not.
 	@echo "INCEPTION LISTING:"
-	@echo "======== CONTAINERS"
+	@echo "\n======== CONTAINERS ========"
 	@sudo docker ps -a
-	@echo "======== IMAGES"
+	@echo "\n======== IMAGES ========"
 	@sudo docker images -a
-	@echo "======== VOLUMES"
+	@echo "\n======== VOLUMES ========"
 	@sudo docker volume ls
-	@echo "======== NETWORKS"
+	@echo "\n======== NETWORKS ========"
 	@sudo docker network ls
 
 .PHONY: all down clean list
