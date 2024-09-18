@@ -1,0 +1,10 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+STOP='\033[0m'
+
+# Auto restarts the bot when it crashes
+while true; do
+	make
+	echo -e "${RED}	dev.sh: restarting ${STOP} \n"
+done

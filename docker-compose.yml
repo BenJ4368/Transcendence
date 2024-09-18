@@ -16,7 +16,7 @@ services:
   web:
     build: ./django
     container_name: web
-    command: gunicorn --bind 0.0.0.0:8000 project_transcendence.wsgi:application
+    command: gunicorn --reload --bind 0.0.0.0:8000 project_transcendence.wsgi:application
     volumes:
       - ./django/:/usr/src/app/
     env_file:

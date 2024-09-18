@@ -55,7 +55,7 @@ ROOT_URLCONF = 'project_transcendence.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'app_transcendence', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
