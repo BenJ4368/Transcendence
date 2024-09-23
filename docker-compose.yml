@@ -16,7 +16,7 @@ services:
   web:
     build: ./django
     container_name: web
-    command: gunicorn --reload --bind 0.0.0.0:8000 project_transcendence.wsgi:application
+    command: gunicorn --bind 0.0.0.0:8000 project_transcendence.wsgi:application
     volumes:
       - ./django/:/usr/src/app/
     env_file:
@@ -38,6 +38,18 @@ services:
       transcendence:
     #restart: always
 
+  # vault:
+  #   image: hashicorp/vault:1.17
+  #   container_name: vault
+  #   env_file:
+  #     ./vault/.env
+  #   ports:
+  #     - 8200:8200
+  #   volumes:
+  #     - ./vault/:/vault/data
+  #   cap_add:
+  #     - IPC_LOCK
+  #   command: serve
 
 volumes:
   db:
