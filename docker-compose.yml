@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
 
+  # NGINX Web server
   nginx:
     build: ./nginx
     container_name: nginx
@@ -10,9 +11,38 @@ services:
     depends_on:
       - web
     networks:
-      transcendence:
-    #restart: always
-    
+      - nginx-django-network
+
+  # POSTGRES database
+  postgresql:
+    image: postgres:15
+    container_name: postgresql
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - ./postgresql/.env
+    #depends_on:
+    # - vault
+    networks:
+      - postgres-django-network
+
+  # Hashicorp vault
+  # vault:
+  #   image: hashicorp/vault:1.17
+  #   container_name: vault
+  #   env_file:
+  #     ./vault/.env
+  #   ports:
+  #     - 8200:8200
+  #   volumes:
+  #     - vault:/vault/files
+  #   cap_add:
+  #     - IPC_LOCK
+  #   command: server -dev
+  #   networks:
+  #     - vault-django-network
+
+  # Django app
   web:
     build: ./django
     container_name: web
@@ -23,37 +53,20 @@ services:
       - ./django/.env
     depends_on:
       - postgresql
+    #  - vault
     networks:
-      transcendence:
-    #restart: always
-
-  postgresql:
-    image: postgres:15
-    container_name: postgresql
-    volumes:
-      - db:/var/lib/postgresql/data/
-    env_file:
-      - ./postgresql/.env
-    networks:
-      transcendence:
-    #restart: always
-
-  # vault:
-  #   image: hashicorp/vault:1.17
-  #   container_name: vault
-  #   env_file:
-  #     ./vault/.env
-  #   ports:
-  #     - 8200:8200
-  #   volumes:
-  #     - ./vault/:/vault/data
-  #   cap_add:
-  #     - IPC_LOCK
-  #   command: serve
+      - nginx-django-network
+      - postgres-django-network
+      - vault-django-network
 
 volumes:
   db:
 
 networks:
-  transcendence:
+  nginx-django-network:
     driver: bridge
+  postgres-django-network:
+    driver: bridge
+  vault-django-network:
+    driver: bridge
+  

@@ -1,14 +1,12 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "postgres" ]
+if [ "$POSTGRES_HOST" = "postgresql" ] # When env are set
 then
     echo "Waiting for postgres..."
-
-    while ! nc -z $SQL_HOST $SQL_PORT; do
+    while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do # Test connexion to postgres
         sleep 0.1
     done
-
-    echo "PostgreSQL started"
+    echo "Postgres started"
 fi
 
 python3 manage.py flush --no-input
