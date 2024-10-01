@@ -1,0 +1,3 @@
+path "django/*" {
+    capabilities = ["read"]
+}

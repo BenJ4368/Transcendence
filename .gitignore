@@ -1,4 +1,6 @@
 django/.env
 postgresql/.env
 vault/.env
-postgresql/volume
+postgresql/data
+vault/raft
+vault/certs

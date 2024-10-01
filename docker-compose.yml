@@ -18,29 +18,31 @@ services:
     image: postgres:15
     container_name: postgresql
     volumes:
-      - db:/var/lib/postgresql/data
+      - ./postgresql/data:/var/lib/postgresql/data
     env_file:
       - ./postgresql/.env
-    #depends_on:
-    # - vault
+    depends_on:
+     - vault
     networks:
       - postgres-django-network
 
   # Hashicorp vault
-  # vault:
-  #   image: hashicorp/vault:1.17
-  #   container_name: vault
-  #   env_file:
-  #     ./vault/.env
-  #   ports:
-  #     - 8200:8200
-  #   volumes:
-  #     - vault:/vault/files
-  #   cap_add:
-  #     - IPC_LOCK
-  #   command: server -dev
-  #   networks:
-  #     - vault-django-network
+  vault:
+    image: hashicorp/vault:1.17
+    container_name: vault
+    env_file:
+      ./vault/.env
+    ports:
+      - 8200:8200
+    volumes:
+      - ./vault/raft:/vault/raft
+      - ./vault/config:/vault/config
+    #  - ./vault/certs:/vault/certs
+    cap_add:
+      - IPC_LOCK
+    entrypoint: /vault/config/init-vault.sh
+    networks:
+      - vault-django-network
 
   # Django app
   web:
@@ -53,14 +55,11 @@ services:
       - ./django/.env
     depends_on:
       - postgresql
-    #  - vault
+      - vault
     networks:
       - nginx-django-network
       - postgres-django-network
       - vault-django-network
-
-volumes:
-  db:
 
 networks:
   nginx-django-network:

@@ -2,6 +2,8 @@ import os
 import hvac
 
 def get_db_credentials():
+
+    
     client = hvac.Client(url=os.environ.get('VAULT_ADDR'), token='roottoken')
     if not client.is_authenticated():
         raise Exception("Vault client is not authenticated!")

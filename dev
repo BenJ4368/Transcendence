@@ -1,9 +1,0 @@
-#!/bin/bash
-
-RED='\033[0;31m'
-STOP='\033[0m'
-
-while true; do
-	make
-	echo -e "${RED}	dev.sh: restarting ${STOP} \n"
-done
