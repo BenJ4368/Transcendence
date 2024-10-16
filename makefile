@@ -18,6 +18,9 @@ clean: #Stops and remove all containers, images, volumes and networks
 	 sudo docker volume rm $$(sudo docker volume ls -q);\
 	 sudo docker network rm $$(sudo docker network ls -q)
 
+fclean:
+	@sudo rm -rf vault/volume/*
+
 list: #Lists all containers, images, volumes and networks. Running or not, used or not.
 	@echo "INCEPTION LISTING:"
 	@echo "\n======== CONTAINERS ========"
