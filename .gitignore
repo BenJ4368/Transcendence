@@ -1,6 +1,9 @@
 django/.env
+django/secrets
 postgresql/.env
 vault/.env
 postgresql/data
-vault/raft
-vault/certs
+vault/volume
+vault/config/root-token
+redis/data
+vault/config/unseal-keys.json

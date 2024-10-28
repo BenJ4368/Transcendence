@@ -1,12 +1,12 @@
 #!/bin/sh
 
-if [ "$POSTGRES_HOST" = "postgresql" ] # When env are set
+sleep 5 # making sure vault is operational
+
+if [ "$POSTGRES_HOST" = "postgresql" ]
 then
-    echo "Waiting for postgres..."
-    while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do # Test connexion to postgres
-        sleep 0.1
+    while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
+        sleep 1
     done
-    echo "Postgres started"
 fi
 
 python3 manage.py flush --no-input

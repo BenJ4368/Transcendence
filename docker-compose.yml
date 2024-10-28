@@ -42,7 +42,21 @@ services:
     entrypoint: vault server -config="/config/vault-config.hcl"
     networks:
       - vault-django-network
-
+    
+  vault-init:
+    image: hashicorp/vault:1.17
+    container_name: vault-init
+    volumes:
+      - ./django/secrets:/django/secrets
+      - ./vault/config:/config
+    depends_on:
+      - vault
+    env_file:
+      - ./vault/.env
+    entrypoint: sh -c "sleep 3 && /config/init.sh"
+    networks:
+      - vault-django-network
+    
   # Redis
   redis:
     image: redis:7
@@ -67,10 +81,12 @@ services:
       - redis
       - postgresql
       - vault
+      - vault-init
     networks:
       - nginx-django-network
       - redis-postgres-django-network
       - vault-django-network
+    restart: on-failure
 
 networks:
   nginx-django-network:

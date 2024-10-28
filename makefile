@@ -19,7 +19,7 @@ clean: #Stops and remove all containers, images, volumes and networks
 	 sudo docker network rm $$(sudo docker network ls -q)
 
 fclean:
-	@sudo rm -rf vault/volume/*
+	@sudo rm -rf vault/volume/* vault/config/root-token vault/config/unseal-keys.json django/secrets/*
 
 list: #Lists all containers, images, volumes and networks. Running or not, used or not.
 	@echo "INCEPTION LISTING:"

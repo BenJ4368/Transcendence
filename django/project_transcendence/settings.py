@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import hvac
 #from .vault_helper import get_db_credentials
 from pathlib import Path
 
@@ -74,18 +75,39 @@ WSGI_APPLICATION = 'project_transcendence.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# Need to get secrets from Vault first
 
-#get_db_credentials()
-DATABASES = {
-    'default': {
-        "ENGINE": os.environ.get("DJANGO_DB_ENGINE"),
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT"),
+VAULT_ADDR = os.environ.get("VAULT_ADDR")
+vault_client = hvac.Client(url=VAULT_ADDR)
+# print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+# print(os.environ['VAULT_DJANGO_TOKEN_PATH']);
+token_file = os.getenv('VAULT_DJANGO_TOKEN_PATH')
+
+if token_file:
+    with open(token_file, 'r') as file:
+        django_token = file.read().strip()
+        # print(django_token)
+        vault_client.token = django_token;
+else:
+    raise Exception("Cannot provide django vault token.")
+
+
+try :
+    postgres_user = vault_client.secrets.kv.read_secret_version(path='POSTGRES_USER', mount_point='kv')['data']['data']['value']
+    postgres_password = vault_client.secrets.kv.read_secret_version(path='POSTGRES_PASSWORD', mount_point='kv')['data']['data']['value']
+
+    DATABASES = {
+        'default': {
+            "ENGINE": os.environ.get("DJANGO_DB_ENGINE"),
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": postgres_user,
+            "PASSWORD": postgres_password,
+            "HOST": os.environ.get("POSTGRES_HOST"),
+            "PORT": os.environ.get("POSTGRES_PORT"),
+        }
     }
-}
+except hvac.exceptions.InvalidRequest as err:
+    print(f"Error accessing secrets: {err}")
 
 
 # Password validation

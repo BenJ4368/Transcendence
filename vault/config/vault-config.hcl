@@ -1,8 +1,13 @@
-storage "file" {
-  path = "/vault/data"
+storage "raft" {
+  path = "/vault/file"
+  node_id = "node1"
 }
 
+
 listener "tcp" {
-  address = "0.0.0.0:8200"
+  address = "vault:8200"
   tls_disable = true
 }
+
+api_addr = "http://vault:8200"
+cluster_addr = "http://vault:8201"
