@@ -14,12 +14,15 @@ clean: #Stops and remove all containers, images, volumes and networks
 	@echo "Cleaning..."
 	@sudo docker stop $$(sudo docker ps -qa);\
 	 sudo docker rm $$(sudo docker ps -qa);\
-	 sudo docker rmi $$(sudo docker images -qa);\
 	 sudo docker volume rm $$(sudo docker volume ls -q);\
 	 sudo docker network rm $$(sudo docker network ls -q)
 
+iclean: #Removes all images
+	@echo "Cleaning..."
+	@sudo docker rmi $$(sudo docker images -qa);
+
 fclean:
-	@sudo rm -rf vault/volume/* vault/config/root-token vault/config/unseal-keys.json django/secrets/*
+	@sudo rm -rf vault/volume/* vault/config/root-token vault/config/unseal-keys.json django/secrets/* 
 
 list: #Lists all containers, images, volumes and networks. Running or not, used or not.
 	@echo "INCEPTION LISTING:"

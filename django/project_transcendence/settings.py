@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 import hvac
-#from .vault_helper import get_db_credentials
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -79,14 +78,11 @@ WSGI_APPLICATION = 'project_transcendence.wsgi.application'
 
 VAULT_ADDR = os.environ.get("VAULT_ADDR")
 vault_client = hvac.Client(url=VAULT_ADDR)
-# print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-# print(os.environ['VAULT_DJANGO_TOKEN_PATH']);
 token_file = os.getenv('VAULT_DJANGO_TOKEN_PATH')
 
 if token_file:
     with open(token_file, 'r') as file:
         django_token = file.read().strip()
-        # print(django_token)
         vault_client.token = django_token;
 else:
     raise Exception("Cannot provide django vault token.")
