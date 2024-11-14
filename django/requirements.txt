@@ -1,5 +1,0 @@
-Django>=4.2.15
-gunicorn
-psycopg2-binary==2.9.6
-hvac
-django-redis

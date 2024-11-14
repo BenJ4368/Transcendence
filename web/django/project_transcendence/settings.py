@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import hvac
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_transcendence',
+
+    'rest_framework',
+    'rest_framework_simplejwt',
+
+    'two_factor',
+    'django.contrib.sites',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'django_otp.middleware.OTPMiddleware'
 ]
 
 ROOT_URLCONF = 'project_transcendence.urls'
@@ -69,41 +81,36 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'project_transcendence.wsgi.application'
+ASGI_APPLICATION = 'project_transcendence.asgi.application'
 
+CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1', 'https://localhost']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # Need to get secrets from Vault first
 
-VAULT_ADDR = os.environ.get("VAULT_ADDR")
-vault_client = hvac.Client(url=VAULT_ADDR)
-token_file = os.getenv('VAULT_DJANGO_TOKEN_PATH')
+vault_client = hvac.Client(url=os.environ.get("VAULT_ADDR"))
 
-if token_file:
-    with open(token_file, 'r') as file:
-        django_token = file.read().strip()
-        vault_client.token = django_token;
-else:
-    raise Exception("Cannot provide django vault token.")
+vault_role_id = os.environ.get("VAULT_ROLE_ID")
+vault_secret_id = os.environ.get("VAULT_SECRET_ID")
 
+vault_auth_response = vault_client.auth.approle.login(role_id=vault_role_id, secret_id=vault_secret_id)
+vault_client.token = vault_auth_response['auth']['client_token']
 
-try :
-    postgres_user = vault_client.secrets.kv.read_secret_version(path='POSTGRES_USER', mount_point='kv')['data']['data']['value']
-    postgres_password = vault_client.secrets.kv.read_secret_version(path='POSTGRES_PASSWORD', mount_point='kv')['data']['data']['value']
+postgres_user = vault_client.secrets.kv.read_secret_version(path='POSTGRES_USER', mount_point='kv')['data']['data']['value']
+postgres_password = vault_client.secrets.kv.read_secret_version(path='POSTGRES_PASSWORD', mount_point='kv')['data']['data']['value']
 
-    DATABASES = {
-        'default': {
-            "ENGINE": os.environ.get("DJANGO_DB_ENGINE"),
-            "NAME": os.environ.get("POSTGRES_DB"),
-            "USER": postgres_user,
-            "PASSWORD": postgres_password,
-            "HOST": os.environ.get("POSTGRES_HOST"),
-            "PORT": os.environ.get("POSTGRES_PORT"),
-        }
+DATABASES = {
+    'default': {
+        "ENGINE": os.environ.get("DJANGO_DB_ENGINE"),
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": postgres_user,
+        "PASSWORD": postgres_password,
+        "HOST": os.environ.get("POSTGRES_HOST"),
+        "PORT": os.environ.get("POSTGRES_PORT"),
     }
-except hvac.exceptions.InvalidRequest as err:
-    print(f"Error accessing secrets: {err}")
+}
+
 
 
 # Password validation
@@ -124,6 +131,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = 'two_factor:login'
+
+# LOGIN_REDIRECT_URL = 'two_factor:profile'
+
+LOGIN_REDIRECT_URL = '/jwt_exchange/'
+
+TWO_FACTOR_LOGIN_REDIRECT_URL = '/jwt_exchange/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -142,6 +160,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -154,4 +176,18 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': 'redis://redis:6379/1',
     }
+}
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated', #(Exige une authentification pour toutes les vues)
+    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }

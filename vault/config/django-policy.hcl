@@ -1,3 +1,3 @@
 path "kv/*" {
-    capabilities = ["read", "create", "update", "delete", "list"]
+    capabilities = ["create", "read", "list", "update", "delete"]
 }

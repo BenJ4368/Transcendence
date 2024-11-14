@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    
+    <div class="wrapper"></div>
+        <form id="register-form" method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+
+            {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+
+            <h1>Register</h1>
+
+            {{ form.username.errors }}
+            <div class="input-box">
+                {{ form.username }}
+            </div>
+
+            {{ form.password.errors }}
+            <div class="input-box">
+                {{ form.password }}
+            </div>
+
+            {{ form.email.errors }}
+            <div class="input-box">
+                {{ form.email }}
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+
+            <div class="login">
+                <a href="{% url 'two_factor:login' %}">Already have an account ?</a>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>

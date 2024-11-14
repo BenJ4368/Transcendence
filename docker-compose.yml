@@ -32,8 +32,6 @@ services:
     container_name: vault
     env_file:
       ./vault/.env
-    ports:
-      - 8200:8200
     volumes:
       - ./vault/volume:/vault
       - ./vault/config:/config
@@ -47,22 +45,21 @@ services:
     image: hashicorp/vault:1.17
     container_name: vault-init
     volumes:
-      - ./django/secrets:/django/secrets
+      - ./web/.env:/django/.env
       - ./vault/config:/config
     depends_on:
       - vault
     env_file:
       - ./vault/.env
-    entrypoint: sh -c "sleep 3 && /config/init.sh"
+    entrypoint:  /config/init.sh
     networks:
       - vault-django-network
+    restart: on-failure
     
   # Redis
   redis:
     image: redis:7
     container_name: redis
-    ports:
-      - 6379:6379
     volumes:
       - ./redis/data:/data
     networks:
@@ -70,13 +67,13 @@ services:
 
   # Django app
   web:
-    build: ./django
+    build: ./web/django/
     container_name: web
-    command: gunicorn --bind 0.0.0.0:8000 project_transcendence.wsgi:application
+    command: daphne -b 0.0.0.0 -p 8000 project_transcendence.asgi:application
     volumes:
-      - ./django/:/usr/src/app/
+      - ./web/django/:/usr/src/app/
     env_file:
-      - ./django/.env
+      - ./web/.env
     depends_on:
       - redis
       - postgresql
