@@ -1,48 +1,57 @@
+RED=\033[31m
+YEL=\033[33m
+CYA=\033[36m
+STOP=\033[0m
+
 all: #Builds, then starts all containers. Entrypoint of ft_transcendence
-	@echo "Composing Transcendence..."
+	@echo "$(CYA)=== Composing Transcendence...$(STOP)"
 	@sudo docker-compose up --build -d redis postgresql vault
-	@sleep 5
+	@echo "$(YEL)=== Waiting for Redis, PostgreSQL and Vault (10s)$(STOP)"
+	@sleep 10
 	@sudo docker-compose up --build -d vault-init
-	@sleep 20
-	@sudo docker-compose up --build web nginx
+	@echo "$(YEL)=== Initializing Vault (30s)$(STOP)"
+	@sleep 30
+	@sudo docker-compose up --build -d web nginx
 	@sudo docker-compose logs -f web
 
 start: #Starts stopped containers, without re-building them
-	@echo "Starting containers..."
-	@sudo docker-compose up
+	@echo "$(CYA)=== Starting containers...$(STOP)"
+	@sudo docker-compose up redis postgresql vault web nginx
 
 stop: #Stops containers, does not remove them
-	@echo "Stopping containers..."
+	@echo "$(CYA)=== Stopping containers...$(STOP)"
 	@sudo docker-compose stop
 
-clean: #Stops and remove all containers, images, volumes and networks
-	@echo "Cleaning..."
+clean: #Stops and remove all containers volumes and networks
+	@echo "$(CYA)=== Stopping and cleaning containers, volumes and networks...$(STOP)"
 	@sudo docker stop $$(sudo docker ps -qa);\
 	 sudo docker rm $$(sudo docker ps -qa);\
 	 sudo docker volume rm $$(sudo docker volume ls -q);\
 	 sudo docker network rm $$(sudo docker network ls -q)
 
 iclean: #Removes all images
-	@echo "Cleaning images..."
+	@echo "$(RED)!!!=== Do you really want to remove all images ?$(STOP)"
+	@read -p "Confirmez (y/n) : " confirm && [ "$$confirm" = "y" ] || (echo "$(YEL)Abandonné.$(STOP)" && exit 1)
+	@echo "$(CYA)=== Cleaning images...$(STOP)"
 	@sudo docker rmi $$(sudo docker images -qa);
 
 
 fclean: #Removes all files contained in the volumes
-	@echo "Cleaning static files..."
+	@echo "$(RED)!!!=== Do you really want to remove all data ?\n$(YEL) /!\ This will delete all peristed data (keys, users, scores...) /!\ $(STOP)"
+	@read -p "Confirmez (y/n) : " confirm && [ "$$confirm" = "y" ] || (echo "$(YEL)Abandonné.$(STOP)" && exit 1)
+	@echo "$(CYA)=== Cleaning data...$(STOP)"
 	@sudo rm -rf postgresql/data vault/volume/* vault/config/root-token vault/config/unseal-keys.json web/secrets/* 
 	@sed -i '/^VAULT_ROLE_ID=/d' web/.env
 	@sed -i '/^VAULT_SECRET_ID=/d' web/.env
-	@make clean
 
 list: #Lists all containers, images, volumes and networks. Running or not, used or not.
-	@echo "INCEPTION LISTING:"
-	@echo "\n======== CONTAINERS ========"
+	@echo "\n$(CYA)======== CONTAINERS ========$(STOP)"
 	@sudo docker ps -a
-	@echo "\n======== IMAGES ========"
+	@echo "\n$(CYA)======== IMAGES ============$(STOP)"
 	@sudo docker images -a
-	@echo "\n======== VOLUMES ========"
+	@echo "\n$(CYA)======== VOLUMES ===========$(STOP)"
 	@sudo docker volume ls
-	@echo "\n======== NETWORKS ========"
+	@echo "\n$(CYA)======== NETWORKS ==========$(STOP)"
 	@sudo docker network ls
 
-.PHONY: all down clean list
+.PHONY: all start stop clean iclean fclean lsit
