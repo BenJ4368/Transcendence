@@ -89,7 +89,10 @@ CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1', 'https://localhost']
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # Need to get secrets from Vault first
 
-vault_client = hvac.Client(url=os.environ.get("VAULT_ADDR"))
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+vault_client = hvac.Client(url=os.environ.get("VAULT_ADDR"), cert=(os.environ.get("VAULT_TLS_CERT"), os.environ.get("VAULT_TLS_KEY")), verify=False)
 
 vault_role_id = os.environ.get("VAULT_ROLE_ID")
 vault_secret_id = os.environ.get("VAULT_SECRET_ID")

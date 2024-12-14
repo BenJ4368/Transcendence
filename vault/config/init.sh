@@ -27,7 +27,7 @@ add_secret() {
     fi
 }
 
-# Installing jq if not already
+# Installing jq and openssl if not already
 if ! command -v jq &> /dev/null; then
     echo "jq not installed. Installing..."
     apk add --no-cache jq
@@ -61,6 +61,7 @@ unseal_vault() {
 
 # Initializing vault; generates 1 unseal key, 1 root token and saves them in their file.
 init_vault() {
+    echo "Generating TLS certificates..."
     echo "Initializing Vault..."
     init_output=$(vault operator init -format=json -key-shares=1 -key-threshold=1)
     sleep 3
