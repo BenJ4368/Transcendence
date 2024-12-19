@@ -3,7 +3,8 @@ web/django/tls/vault.cert
 web/django/tls/vault.key
 
 vault/.env
-vault/config/tls
+vault/config/tls/vault.cert
+vault/config/tls/vault.key
 vault/config/root-token
 vault/config/unseal-keys.json
 vault/volume
