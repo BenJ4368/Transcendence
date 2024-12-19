@@ -1,0 +1,28 @@
+
+/* Style pour les informations de l'utilisateur */
+.info {
+	max-width: 30rem; /* équivalent à max-w-md */
+}
+
+/* Style pour le nom d'affichage */
+.info h1 {
+	margin-bottom: 0.5rem; /* équivalent à mb-2 */
+}
+
+.form-table {
+	border-collapse: separate; /* Important pour activer border-spacing */
+	border-spacing: 1rem 1rem; /* Espacement horizontal (10px) et vertical (15px) */
+	width: 100%; /* Optionnel : ajuste la largeur du tableau */
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+
+.align-top {
+	vertical-align: top; /* Aligne le contenu en haut */
+}
+
+
+.form-table td {
+	padding: 10px; /* Ajoute de l'espace à l'intérieur de chaque cellule */
+}

@@ -1,0 +1,12 @@
+.home-container{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 3vh 5px;
+	align-items: stretch;
+}
+
+.full-space {
+	height: 100%;
+	width: 100%;
+}

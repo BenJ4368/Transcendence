@@ -1,0 +1,15 @@
+<div id="lobby_list_body" class="lobby-list">
+	{% for lobby in lobbys %}
+	<button data-id="{{ lobby.lobby_id }}">
+		<div class="horizontal-flex" style="text-align: left;">
+			<div id="lobby-join-elem">{{ lobby.name }}</div>
+			<div id="lobby-join-elem">{{lobby.admin}}</div>
+			<div id="lobby-join-elem">{{lobby.is_full}}</div>
+		</div>
+	</button>
+	{% empty %}
+	<div class="horizontal-flex" style="text-align: center;">
+		<div class="text-l" style="text-align: center; flex: 1;">No public lobby found</div>
+	</div>
+	{% endfor %}
+</div>

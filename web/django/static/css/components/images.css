@@ -1,0 +1,104 @@
+/* Classe de base pour l'image */
+img.avatar {
+	border-radius: 50%; /* Rendre l'image ronde */
+	object-fit: cover; /* Garder le ratio de l'image */
+}
+
+/* Différentes tailles possibles */
+img.small {
+	width: 32px;
+	height: 32px;
+}
+
+img.medium {
+	width: 64px;
+	height: 64px;
+}
+
+img.large {
+	width: 144px;
+	height: 144px;
+}
+
+.fruit-img {
+	z-index: 1;
+	position: fixed;
+	display: flex;
+	width: auto;
+	height: auto;
+}
+
+.strawberry-img {
+	top: 5px;
+	left: -1vw;
+	max-width:160px;
+}
+
+.orange-img {
+
+	top: 3px;
+	right: -1px;
+	max-width: 250px;
+}
+
+.blueberry-img {
+
+	bottom: -2px;
+	left: 35vw;
+	max-width:300px;
+}
+
+.banana-img {
+
+	bottom: 3px;
+	right: 2px;
+	max-width:250px;
+}
+
+.apple-img {
+
+	top: 30vh;
+	right: -2px;
+	max-width:250px;
+}
+
+.pear-img {
+
+	bottom: -2px;
+	left: -2px;
+	max-width:300px;
+}
+
+.fig-img {
+
+	top: 36vh;
+	left: -20px;
+	max-width: 200px;
+}
+
+@media (max-height: 620px) {
+	.apple-img {
+		display: none;
+	}
+	.fig-img {
+		display: none;
+	}
+}
+
+@media (max-width: 800px) {
+	.blueberry-img {
+		display: none;
+	}
+}
+
+@media (max-height: 436px) {
+	.pear-img {
+		display: none;
+	}
+	.blueberry-img {
+		display: none;
+	}
+	.banana-img {
+		display: none;
+	}
+}

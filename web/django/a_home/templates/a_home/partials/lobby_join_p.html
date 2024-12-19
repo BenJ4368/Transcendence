@@ -1,0 +1,29 @@
+{% extends 'layouts/box.html' %}
+{% block content %}
+
+<h1>Join Lobby</h1>
+
+<div class="lobby-list-frame">
+	<div id="lobby_list_header" class="horizontal-flex text-l">
+		<div id="lobby-join-elem">Lobby Name</div>
+		<div id="lobby-join-elem">Lobby Admin</div>
+		<div id="lobby-join-elem">Full</div>
+	</div>
+	{% include 'a_home/partials/lobby_list.html' %}
+</div>
+
+<!-- Bouton pour rafraîchir -->
+<div class="horizontal-flex">
+	<button id="refresh-btn" class="button">Rafraîchir</button>
+
+	<a href="" class="spa-link" id="join-lobby-link">
+		<button class="button" id="join-lobby-button" style="display: block;">Join</button>
+	</a>
+
+</div>
+
+{% endblock %}
+
+
+
+

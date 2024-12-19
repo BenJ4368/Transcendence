@@ -1,0 +1,79 @@
+<style>
+.green-dot {
+	width: 10px;
+	height: 10px;
+	background-color: green;
+	border-radius: 50%; /* Rend l'élément circulaire */
+	}
+
+.gray-dot {
+	width: 10px;
+	height: 10px;
+	background-color: gray;
+	border-radius: 50%; /* Rend l'élément circulaire */
+	}
+
+.groupchat-members {
+    display: flex;
+    gap: 16px; /* Espace entre les éléments */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+	}
+
+.member-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #d1d5db; /* Gris clair */
+    width: 80px;
+    gap: 8px;
+	}
+
+	.member-avatar-container {
+		position: relative;
+	}
+
+	.status-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		border: 2px solid #1f2937; /* Gris foncé pour le contour */
+	}
+
+	.status-dot.online {
+		background-color: #00ff00; /* Vert pour en ligne */
+	}
+
+	.status-dot.offline {
+		background-color: #808080; /* Gris pour hors ligne */
+	}
+
+	.avatar-img {
+		width: 56px; /* Équivaut à 'w-14' */
+		height: 56px; /* Équivaut à 'h-14' */
+		border-radius: 50%; /* Rond */
+		object-fit: cover; /* Ajuste l'image */
+	}
+
+	.member-name {
+		color: #d1d5db; /* Texte gris clair */
+		text-align: center;
+	}	
+</style>
+
+
+
+<span id="online-count" class="online-count">
+	{{ online_count }}
+</span> 
+
+{% if online_count > 1 %}
+<div id="online-icon" class="green-dot" style="position: absolute; top: 14px; left: 14px;"></div>
+{% else %}
+<div id="online-icon" class="gray-dot" style="position: absolute; top: 14px; left: 14px;"></div>
+{% endif %}

@@ -8,6 +8,8 @@ services:
     container_name: nginx
     ports:
       - 443:443
+    volumes:
+      - ./web/django/:/usr/src/app/
     depends_on:
       - web
     networks:
@@ -69,7 +71,7 @@ services:
   web:
     build: ./web/django/
     container_name: web
-    command: daphne -b 0.0.0.0 -p 8000 project_transcendence.asgi:application
+    command: daphne -b 0.0.0.0 -p 8000 a_core.asgi:application
     volumes:
       - ./web/django/:/usr/src/app/
     env_file:

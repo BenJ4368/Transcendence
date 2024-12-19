@@ -1,0 +1,22 @@
+/* Conteneur centré avec espace interne */
+.error-container {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 60px 20px;
+	text-align: center;
+}
+
+/* Style du titre d'erreur */
+.error-title {
+	font-size: 48px; /* équivalent à text-6xl */
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+/* Style du message d'erreur */
+.error-message {
+	font-size: 18px;
+	color: #6b7280; /* Gris neutre pour le texte */
+	margin: 20px 0;
+}
+	

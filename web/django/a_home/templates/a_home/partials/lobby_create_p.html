@@ -1,0 +1,23 @@
+{% extends 'layouts/box.html' %}
+
+{% block content %}
+
+<h1>Create Lobby</h1>
+<form class="lobby-form" id="lobby-create-form" action="{% url 'new-lobby' %}" method="POST">
+	{% csrf_token %}
+	<table class="form-table">
+		<tr>
+			<td>{{ form.name.label_tag }}</td>
+			<td>{{ form.name }}</td>
+		</tr>
+		<tr>
+			<td>{{ form.is_private.label_tag }}</td>
+			<td>{{ form.is_private }}</td>
+		</tr>
+	</table>
+	<div class="horizontal-flex">
+		<button type="submit" class="submit-button">Create Lobby</button>
+	</div>
+</form>
+
+{% endblock %}

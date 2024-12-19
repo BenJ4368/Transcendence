@@ -1,0 +1,36 @@
+h1 {
+	text-align: center;
+	font-family: "Tiny5", sans-serif;
+	font-weight: 400;
+	font-size: 32px;
+	margin-top: 0;
+}
+
+.pixelated {
+	font-family: "Tiny5", sans-serif;
+	font-weight: 400;
+}
+
+.base-font {
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.text-s {
+	font-size: 12px;
+}
+
+.text-m {
+	font-size: 18px;
+}
+
+.text-l {
+	font-size: 24px;
+}
+
+.text-xl {
+	font-size: 32px;
+}
+
+.text-xxl {
+	font-size: 40px;
+}

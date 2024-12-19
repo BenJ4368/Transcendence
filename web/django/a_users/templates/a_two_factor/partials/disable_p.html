@@ -1,0 +1,13 @@
+{% extends 'layouts/box.html' %}
+
+{% block content %}
+
+    <h1>Disable Two-Factor Security</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <table>{{ form.as_table }}</table>
+        <button type="submit">Disable</button>
+      </form>
+
+{% endblock %}

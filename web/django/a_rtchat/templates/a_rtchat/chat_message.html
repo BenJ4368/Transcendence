@@ -1,0 +1,24 @@
+{% if message.author == user %}
+<li class="message outgoing">
+	<div class="message-bubble outgoing-bubble">
+		<span>{{ message.body }}</span>
+	</div>
+</li>
+{% else %}
+<li class="message incoming">
+	<div class="user-avatar">
+		<a href="{% url 'profile' message.author.username %}">
+			<img src="{{ message.author.profile.avatar }}" alt="User avatar">
+		</a>
+	</div>
+	<div class="message-content">
+		<div class="message-bubble incoming-bubble">
+			<span>{{ message.body }}</span>
+		</div>
+		<div class="user-">
+			<span class="user-name">{{ message.author.profile.name }}</span> 
+			<span class="user-username">@{{ message.author.username }}</span>
+		</div>
+	</div>
+</li>
+{% endif %}

@@ -20,13 +20,11 @@ all: #Builds, then starts all containers. Entrypoint of ft_transcendence
 	@sudo docker-compose up --build -d web nginx
 	@sudo docker-compose logs -f web
 
-start: #Starts stopped containers, without re-building them
-	@echo "$(CYA)=== Starting containers...$(STOP)"
-	@sudo docker-compose up redis postgresql vault web nginx
-
-stop: #Stops containers, does not remove them
-	@echo "$(CYA)=== Stopping containers...$(STOP)"
-	@sudo docker-compose stop
+reload: #stops and rebuilds the web and nginx containers
+	@echo "$(CYA)=== Reloading web and nginx...$(STOP)"
+	@sudo docker-compose stop web nginx
+	@sudo docker-compose up --build -d web nginx
+	@sudo docker-compose logs -f web
 
 clean: #Stops and remove all containers volumes and networks
 	@echo "$(CYA)=== Stopping and cleaning containers, volumes and networks...$(STOP)"
@@ -49,6 +47,7 @@ fclean: #Removes all files contained in the volumes
 	@sudo rm -rf postgresql/data vault/volume/* vault/config/root-token vault/config/unseal-keys.json vault/config/tls/* web/django/tls/*
 	@sed -i '/^VAULT_ROLE_ID=/d' web/.env
 	@sed -i '/^VAULT_SECRET_ID=/d' web/.env
+	@make clean
 
 list: #Lists all containers, images, volumes and networks. Running or not, used or not.
 	@echo "\n$(CYA)======== CONTAINERS ========$(STOP)"

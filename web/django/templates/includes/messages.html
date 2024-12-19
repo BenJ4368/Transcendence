@@ -1,0 +1,38 @@
+<messages>
+	{% if messages %}
+	<div id="notification-container">
+		{% for message in messages %}
+		<div class="notification notification-{{ message.tags }}">
+			<span class="notification-message">{{ message }}</span>
+			<button class="close-btn" onclick="closeNotification(this)">
+				&times;
+			</button>
+		</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+</messages>
+
+
+<script>
+
+	// Fonction pour fermer une notification
+	function closeNotification(button) {
+		const notification = button.parentElement;
+		notification.style.opacity = '0';
+		setTimeout(() => {
+			notification.remove();
+		}, 500); // délai pour laisser l'animation se terminer avant de supprimer
+	}
+
+	// Fonction pour faire disparaître automatiquement la notification
+	document.addEventListener('DOMContentLoaded', function () {
+		const notifications = document.querySelectorAll('.notification');
+		notifications.forEach(notification => {
+			setTimeout(() => {
+				notification.style.opacity = '0';
+				setTimeout(() => notification.remove(), 500);
+			}, 5000); // Masque après 5 secondes
+		});
+	});
+</script>

@@ -1,0 +1,63 @@
+{% extends 'layouts/box.html' %}
+
+
+
+
+<style>
+	.button-container {
+		display: flex;
+		justify-content: center; /* Centre horizontalement */
+		margin-top: 20px; /* Remplace la classe Tailwind `mt-2` */
+	}
+
+	button {
+		padding: 10px 20px; /* Ajuste la taille du bouton */
+		font-size: 16px; /* Taille du texte */
+		cursor: pointer;
+		border: none; /* Supprime la bordure par défaut */
+		background-color: #007BFF; /* Couleur de fond */
+		color: white; /* Couleur du texte */
+		border-radius: 5px; /* Coins arrondis */
+	}
+
+	button:hover {
+		background-color: #0056b3; /* Couleur de fond au survol */
+	}
+
+	/* Formulaire de message */
+	.chat-form {
+		display: flex;
+		align-items: center; /* Centre l'input verticalement */
+		justify-content: center;
+		width: 98%; /* Largeur complète */
+		height: 100%; /* Hauteur complète */
+		margin-bottom: 0px;
+	}
+
+	/* Champ de texte */
+	.chat-form input {
+		width: 100%;
+		padding: 10px;
+		border-radius: 8px;
+		border: none;
+		outline: none;
+		background-color: #4a5568;
+		color: white;
+	}
+</style>
+
+
+
+{% block content %}
+
+<form id="chat_message_form" class="chat-form" action="{% url 'new-groupchat' %}" method="POST">
+	{% csrf_token %}
+	{{ form.groupchat_name }}
+	<div class="button-container">
+		<button type="submit">Create Group Chat</button>
+	</div>
+</form>
+
+
+
+{% endblock %}

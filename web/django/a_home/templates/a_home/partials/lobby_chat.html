@@ -1,0 +1,23 @@
+<div class="chat-wrapper">
+	<div id="chat_window" class="chat-window">
+		<div class="chat-header">
+			<h2>chat</h2>
+		</div>
+
+		<div id='chat_container' class="chat-container">
+			<ul id='chat_messages' class="chat-messages">
+				{% for message in lobby_messages reversed %}
+				{% include 'a_home/partials/chat_message.html' %}
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="chat-footer">
+			<form id="chat_message_form" class="chat-form" action="{% url 'home' %}" method="POST">
+				{% csrf_token %}
+				{{ form.body }}
+			</form>
+		</div>
+	</div>
+
+
+</div>

@@ -1,0 +1,11 @@
+{% extends "layouts/box.html" %}
+
+{% block content %}
+    <h1>Sign out ?</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button red" name="choice" value="yes">Yes</button>
+        <button type="submit" class="button yellow" name="choice" value="no">No</button>
+    </form>
+{% endblock %}

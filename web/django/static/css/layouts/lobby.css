@@ -1,0 +1,135 @@
+.lobby-list {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	overflow: hidden;
+	max-height: 300px; /* Limit the height of the list */
+	overflow-y: auto; /* Make it scrollable */
+}
+
+/* Buttons inside the list */
+.lobby-list button {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding:  0px;
+	font-size: 16px;
+	color: var(--white1);
+	background-color: var(--black3);
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	border-radius: 0px;
+	box-shadow: none;
+	padding: 5px;
+}
+
+.lobby-list button:hover {
+  background-color: var(--black2);
+}
+
+.lobby-list button.selected {
+	background-color: var(--fruit-blue);
+	color: var(--black2);;
+}
+
+#lobby-join-elem {
+	flex: 1;
+	padding: 0px 5px;
+	word-wrap: break-word; /* Permet aux mots longs de revenir à la ligne */
+	overflow-wrap: break-word; /* Version moderne de word-wrap */
+	word-break: break-word; /* Gère les débordements de mots */
+	white-space: normal; /* Comportement par défaut avec retour à la ligne automatique */
+}
+
+#lobby_list_header {
+	background: var(--black3);
+	border: 1px solid var(--white2); /* Bordure apparente */
+	border-radius: 15px 15px 0px 0px; /* Ajoute des coins arrondis */
+	padding: 5px;
+}
+
+
+#lobby_list_body {
+	background: var(--black3);
+	border: 1px solid var(--white2); /* Bordure apparente */
+	border-radius: 0px 0px 15px 15px; /* Ajoute des coins arrondis */
+	padding: 5px;
+	width: 100%;
+	margin-bottom: 1rem;
+}
+
+
+.lobby-list-frame {
+	width: 600px;
+}
+
+.player-box {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	text-align: center;
+	font-family: "Tiny5", sans-serif;
+	font-weight: 400;
+	font-size: 32px;
+
+}
+
+.player-box .player {
+	flex-grow: 1;
+	margin: 0 10px; /* Optionnel : Espace horizontal entre les divs */
+	padding: 20px; /* Espace interne des divs */
+	text-align: center; /* Centre le texte dans chaque div */
+}
+
+.player-box .player .crown-icon {
+	width: 2rem; /* Taille de l'icône */
+	height: 2rem; /* Taille de l'icône */
+	margin-right: 1rem;
+}
+
+#absent {
+	color: var(--white3);
+}
+
+.player-box  .versus {
+	flex-grow: 1; /* Répartit l'espace de façon égale entre les divs */
+	margin: 0 10px; /* Optionnel : Espace horizontal entre les divs */
+	padding: 20px; /* Espace interne des divs */
+	text-align: center; /* Centre le texte dans chaque div */
+	font-size: 50px;
+}
+
+.player-box  .player-name {
+	width: 15rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 40px;
+}
+
+.profile-img {
+	border-radius: 50%; /* Rendre l'image ronde */
+	object-fit: cover; /* Garder le ratio de l'image */
+	margin-right: 5px; /* Espacer l'image du texte */
+}
+
+/* Différentes tailles possibles */
+.profile-img-small {
+	width: 32px;
+	height: 32px;
+}
+
+.profile-img-medium {
+	width: 50px;
+	height: 50px;
+}
+
+.profile-img-large {
+	width: 80px;
+	height: 80px;
+}
+
+#launch-game {
+	margin-top: auto;
+}

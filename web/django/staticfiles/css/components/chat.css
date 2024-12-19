@@ -1,0 +1,149 @@
+@import url('../colors.css');
+
+
+.chat-wrapper {
+	max-width: 400px;
+	flex: 500px;
+	margin: 0px;
+}
+
+/* En-tête du chat */
+.chat-header {
+	display: flex;
+	justify-content: center;
+	background-color: var(--black3);
+	padding: 1px;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	border-bottom: 1px solid var(--black1);
+}
+
+.chat-header h2 {
+	margin: 0.5rem;
+}
+
+.chat-window {
+	height: 400px;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--black3);
+	border-radius: 15px;
+	/* position: relative; */
+	padding: 5px;
+	box-shadow: 0px 0px 15px var(--black1);
+}
+
+/* Pied de page du chat */
+.chat-footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	background-color: var(--black3);
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+	border-top: 1px solid var(--black1);
+	height: 60px; /* Ajustez si nécessaire */
+}
+
+/* Formulaire de message */
+.chat-form {
+	display: flex;
+	align-items: center; /* Centre l'input verticalement */
+	justify-content: center;
+	width: 98%; /* Largeur complète */
+	height: 100%; /* Hauteur complète */
+	margin-bottom: 0px;
+}
+
+/* Champ de texte */
+.chat-form input {
+	width: 100%;
+	padding: 10px;
+	border-radius: 8px;
+	border: none;
+	outline: none;
+	background-color: var(--black1);
+	color: white;
+}
+
+
+/* Conteneur et messages du chat */
+.chat-container {
+	overflow-y: auto;
+	flex-grow: 1;
+	padding: 5px; /* réduit le padding intérieur */
+}
+
+.chat-messages {
+	padding: 0px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.chat-avatar{
+	margin-top: 0.25rem;
+	margin-right: 0.25rem;
+}
+
+/* Message */
+.message {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 0.25rem;
+}
+
+/* Conteneur pour la bulle et les infos de l'utilisateur */
+.message-content {
+	display: flex;
+	flex-direction: column;
+	max-width: 75%;
+}
+
+/* Messages entrant */
+.incoming .message-bubble {
+	background-color: var(--fruit-orange);
+	border-radius: 15px 15px 15px 0;
+}
+
+/* Messages sortant */
+.outgoing {
+	justify-content: flex-end; /* Aligner les messages sortant à droite */
+}
+
+.outgoing .message-bubble {
+	background-color: var(--fruit-yellow);
+	border-radius: 15px 0 15px 15px;
+}
+
+.message-bubble {
+	padding: 0.5rem;
+	color: var(--black2);
+	word-wrap: break-word;      /* Casse les mots trop longs */
+	overflow-wrap: break-word;  /* Casse les mots trop longs */
+}
+
+@keyframes fadeInAndUp {
+	from { opacity: 0; transform: translateY(12px); }
+	to { opacity: 1; transform: translateY(0px); }
+}
+
+
+.user-name {
+	color: var(--white1);
+	display: inline; /* Affiche sur une ligne séparée */
+	font-size: 14px;
+}
+
+.user-username {
+	color: var(--white2);
+	display: inline; /* Affiche sur une ligne séparée */
+	font-size: 12px;
+}
+
+.fade-in-up {
+	animation: fadeInAndUp 0.6s ease;
+}

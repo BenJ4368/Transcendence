@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fruit Pong</title>
+	<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+	<style>
+		/* General Styles */
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f9fafb;
+		}
+		h1 {
+			font-size: 2.25rem;
+			font-weight: bold;
+			margin-bottom: 1rem;
+		}
+		h2 {
+			font-size: 1.25rem;
+			font-weight: bold;
+			margin-bottom: 0.5rem;
+		}
+		p {
+			margin-bottom: 1rem;
+		}
+
+		.navitems > li > a {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			height: 3rem;
+			padding: 0 1rem;
+			border-radius: 0.5rem;
+			transition: background-color 0.2s ease-in-out;
+		}
+		.navitems > li > a:hover {
+			background-color: #374151;
+		}
+		.hoverlist > * {
+			transition: background-color 0.15s ease-in-out;
+			border-radius: 0.375rem;
+		}
+		.hoverlist > *:hover {
+			background-color: #f3f4f6;
+		}
+		.highlight {
+			background-color: #e0e7ff;
+		}
+		/* Custom dropdown menu styling */
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: white;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+			z-index: 1;
+		}
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+		}
+		.dropdown-content a:hover {
+			background-color: #f1f1f1;
+		}
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+		header {
+			background-color: #1f2937;
+			color: white;
+			padding: 1rem 2rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: sticky;
+			top: 0;
+			z-index: 40;
+		}
+		header a {
+			color: white;
+			text-decoration: none; /* Enlève le soulignement */
+			font-size: 1rem; /* Définit une taille de texte pour les liens */
+		}
+		header a:hover {
+			color: #d1d5db; /* Ajoute un effet survol si souhaité, ici en gris clair */
+		}
+		header a.flex {
+			display: flex;
+			align-items: center; /* Aligne verticalement sur la même ligne */
+			gap: 0.5rem; /* Espacement entre le logo et le texte */
+		}
+		header a.flex img {
+			height: 2rem; /* Taille du logo (ajuster selon la taille souhaitée) */
+			width: auto; /* Maintient le ratio du logo */
+		}
+		header a.flex span {
+			font-size: 2rem; /* Taille du texte alignée avec le logo */
+			font-weight: bold; /* Garde la mise en forme en gras */
+		}
+		.navbar ul.navitems {
+			display: flex; /* Pour aligner les éléments horizontalement */
+			list-style: none; /* Supprime les puces */
+			padding: 0;
+			margin: 0;
+			gap: 1.5rem; /* Espace entre les éléments */
+		}
+
+
+
+		header .navelem {
+			display: flex;
+			align-items: center;
+		}
+
+		header .navelem a {
+			padding: 0 5px; /* Ajoute un peu d'espacement autour des liens */
+		}
+
+		header .navelem .separator {
+			color: white; /* Barre verticale blanche */
+			padding: 0 5px;
+			font-weight: bold;
+		}
+/* Style du conteneur principal */
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+		/* Conteneur pour aligner l'image et le texte */
+		.dropdown-header {
+			display: flex;
+			align-items: center; /* Aligne verticalement l'image avec le texte */
+		}
+
+		/* Ajustement de l'image */
+		.profile-img {
+			width: 32px; /* Taille de l'image */
+			height: 32px; /* Même taille en hauteur */
+			border-radius: 50%; /* Rendre l'image ronde */
+			object-fit: cover; /* Garder le ratio de l'image */
+			margin-right: 5px; /* Espacer l'image du texte */
+		}
+
+		/* Style du texte du nom d'utilisateur */
+		.username {
+			font-size: 1em;
+			text-decoration: none;
+		}
+
+		/* Menu déroulant */
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+			z-index: 1;
+			border-radius: 4px; /* Ajoute des coins arrondis au menu */
+		}
+
+		/* Espacement et style des éléments du menu */
+		.dropdown-content a {
+			color: black;
+			padding: 14px 20px; /* Augmente l'espacement entre les éléments */
+			text-decoration: none;
+			display: block;
+			font-size: 14px;
+		}
+
+		/* Montre le menu déroulant lors du survol */
+		.dropdown:hover .dropdown-content {
+			display: block;
+		}
+
+		/* Changement de couleur au survol */
+		.dropdown-content a:hover {
+			background-color: #ddd;
+		}
+		
+		.green-dot {
+			width: 10px;
+			height: 10px;
+			background-color: green;
+			border-radius: 50%; /* Rend l'élément circulaire */
+		}
+
+		.gray-dot {
+			width: 10px;
+			height: 10px;
+			background-color: gray;
+			border-radius: 50%; /* Rend l'élément circulaire */
+		}
+
+		.graylight-dot {
+			width: 10px;
+			height: 10px;
+			background-color: #D1D5DB;
+			border-radius: 50%; /* Rend l'élément circulaire */
+		}
+
+
+	</style>
+</head>
+<body class="{% block class %}{% endblock %}">
+	{% include 'includes/messages.html' %}
+	{% include 'includes/header.html' %}
+
+	{% block layout %}
+	{% endblock %}
+
+	{% block javascript %}
+	{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends 'layouts/box.html' %}
+
+<style>
+	form {
+		margin-top: 16px; /* équivalent de `mt-4` */
+	}
+
+	.button.red {
+		background-color: #EF4444; /* couleur rouge */
+		color: #ffffff; /* texte blanc */
+		padding: 10px 20px;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		text-decoration: none;
+	}
+
+	.button.red:hover {
+		background-color: #DC2626; /* couleur rouge plus foncée au survol */
+	}
+
+	.button {
+		display: inline-block;
+		padding: 10px 20px;
+		border-radius: 4px;
+		cursor: pointer;
+		text-decoration: none;
+		text-align: center;
+	}
+
+	.button-gray {
+		background-color: #D1D5DB; /* gris */
+		color: #000000; /* texte noir */
+		margin-left: 8px; /* équivalent de `ml-1` */
+	}
+
+	.button-gray:hover {
+		background-color: #9CA3AF; /* gris plus foncé au survol */
+	}
+</style>
+
+{% block content %}
+
+<h1>Delete this chatroom</h1>
+
+<h2>"{{ chat_group.groupchat_name }}"</h2>
+
+<form method='POST'>
+    {% csrf_token %}
+    <button type="submit" class="">Yes, delete</button>
+    <a class="button button-gray" href="{{ request.Meta.HTTP_REFERER }}">Cancel</a>
+</form>
+
+{% endblock %}

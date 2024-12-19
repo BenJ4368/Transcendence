@@ -1,0 +1,71 @@
+{% extends 'layouts/box.html' %}
+
+{% block content %}
+
+{% if onboarding %}
+<h1>Complete your Profile</h1>
+{% else %}
+<h1>Edit your Profile</h1>
+{% endif %}
+
+<div class="profile-container">
+	<img class="avatar large" src="{{ user.profile.avatar }}" />
+	<div class="profile-name">
+		<h1>{{ user.profile.name }}</h1>
+		<div class="username">@{{ user.username }}</div>
+	</div>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+	<table class="form-table">
+		<tr>
+			<td>{{ form.image.label_tag }}</td>
+			<td>{{ form.image }}</td>
+		</tr>
+		<tr>
+			<td>{{ form.displayname.label_tag }}</td>
+			<td>{{ form.displayname }}</td>
+		</tr>
+		<tr>
+			<td class="align-top">{{ form.info.label_tag }}</td>
+			<td>{{ form.info }}</td>
+		</tr>
+	</table>
+	  
+
+	<div class="horizontal-flex">
+		{% if onboarding %}
+		<a class="button gray" href="{% url 'home' %}">Skip</a>
+		{% else %}
+		<a class="button gray" href="{{ request.META.HTTP_REFERER }}">Cancel</a>
+		{% endif %}
+		<button type="submit" class="submit-button">Submit</button>
+	</div>
+
+</form>
+
+<script>
+	// This updates the avatar
+	const fileInput = document.querySelector('input[type="file"]');
+
+	fileInput.addEventListener('change', (event) => {
+		const file = event.target.files[0];
+		const image = document.querySelector('#avatar');
+
+		if (file && file.type.includes('image')) {
+			const url = URL.createObjectURL(file);
+			image.src = url;
+		}
+	});
+
+	// This updates the name
+	const display_nameInput = document.getElementById('id_displayname');
+	const display_nameOutput = document.getElementById('displayname');
+
+	display_nameInput.addEventListener('input', (event) => {
+		display_nameOutput.innerText = event.target.value;
+	});
+</script>
+
+{% endblock %}

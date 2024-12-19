@@ -1,0 +1,70 @@
+{% extends 'layouts/blank.html' %}
+{% block content %}
+    
+    <div class="friends_part">
+
+        <div id="friends_button">
+            <form method="get" action="{% url 'friends' 'true_relations' %}">
+                <button type="submit">Friends List</button>
+            </form>
+
+            <form method="get" action="{% url 'friends' 'false_relations' %}">
+                <button type="submit">Invite Request</button>
+            </form>
+
+            <form method="get" action="{% url 'friends' 'search_input' %}">
+                <button type="submit">Search User</button>
+            </form>
+        </div>
+
+        <div id="friends_content">
+            {% if section == 'true_relations' %}
+                <div>
+                    <h2>Friends :</h2>
+                    <ul>
+                        {% for friend in true_relations %}
+                            <li>{{ friend.name }}</li><a href="{% url 'delete_friend' friend.user.username %}">delete</a>
+                        {% empty %}
+                            <p id="empty_list">Empty</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if section == 'false_relations' %}
+                <div>
+                    <h2>Invite :</h2>
+                    <ul>
+                        {% for invite in false_relations %}
+                            <li>{{ invite.name }}</li><a href="{% url 'accept_request' invite.user.username %}">accept</a><a href="{% url 'reject_request' invite.user.username %}">reject</a>
+                        {% empty %}
+                            <p id="empty_list">Empty</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if section == 'search_input' %}
+                <div>
+                    <form method="get" action="">
+                        <h2>Search :</h2>
+                        <input type="text" name="search_user_input" placeholder="player name">
+                        <button type="submit">Search</button>
+
+                        {% if query %}
+                            <ul>
+                                {% for user in results %}
+                                    <li><a href="{% url 'profile' user.username %}">{{ user.profile.name }}</a></li>
+                                {% empty %}
+                                    <li>User not found</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endblock %}

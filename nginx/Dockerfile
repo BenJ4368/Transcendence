@@ -31,6 +31,7 @@ EXPOSE 443
 
 COPY nginx.conf /usr/local/nginx/conf/.
 COPY naxsi.rules /usr/local/nginx/conf/.
+COPY mime.types /etc/nginx/.
 COPY naxsi_core.rules /usr/local/nginx/conf/.
 
 CMD ["/usr/local/nginx/sbin/nginx", "-g", "daemon off;"]

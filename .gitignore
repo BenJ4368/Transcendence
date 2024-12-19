@@ -1,5 +1,5 @@
-django/.env
-django/tls
+web/.env
+web/django/tls
 
 vault/.env
 vault/config/tls

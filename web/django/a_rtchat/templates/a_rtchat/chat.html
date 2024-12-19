@@ -1,0 +1,330 @@
+<style>
+
+	@keyframes fadeInAndUp {
+		from { opacity: 0; transform: translateY(12px); }
+		to { opacity: 1; transform: translateY(0px); }
+	}
+
+	.fade-in-up {
+		animation: fadeInAndUp 0.6s ease;
+	}
+
+
+	/* Wrapper et fenêtre de chat */
+
+
+	.chat-window {
+		height: 720px;
+		display: flex;
+		flex-direction: column;
+		background-color: #2d3748;
+		border-radius: 15px;
+		position: relative;
+		padding: 5px;
+		box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+	}
+
+	.container {
+		display: flex;
+		justify-content: space-between; /* Équivaut à `justify-between` de Tailwind */
+		width: 100%; /* Ajuste selon vos besoins */
+	}
+
+
+	/* En-tête du chat */
+	.chat-header {
+		display: flex;
+		justify-content: center;
+		color: #38a169;
+		background-color: #2d3748;
+		padding: 8px;
+		position: sticky;
+		top: 0;
+		z-index: 10;
+	}
+
+	.online-count {
+		padding-right: 4px;
+	}
+
+	/* Conteneur et messages du chat */
+	.chat-container {
+		overflow-y: auto;
+		flex-grow: 1;
+		padding: 5px; /* réduit le padding intérieur */
+	}
+
+	.chat-messages {
+		padding: 0px;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	/* Message */
+	.message {
+		display: flex;
+		align-items: flex-start;
+		margin-bottom: 8px;
+	}
+
+	/* Conteneur pour la bulle et les infos de l'utilisateur */
+	.message-content {
+		display: flex;
+		flex-direction: column;
+		max-width: 75%;
+	}
+
+	/* Messages entrant */
+	.incoming .message-bubble {
+		background-color: #f7fafc;
+		border-radius: 15px 15px 15px 0;
+	}
+
+	/* Messages sortant */
+	.outgoing {
+		justify-content: flex-end; /* Aligner les messages sortant à droite */
+	}
+
+	.outgoing .message-bubble {
+		background-color: #bbf7d0;
+		border-radius: 15px 0 15px 15px;
+	}
+
+	.message-bubble {
+		padding: 12px;
+		word-wrap: break-word;      /* Casse les mots trop longs */
+		overflow-wrap: break-word;  /* Casse les mots trop longs */
+	}
+
+
+	/* Avatar de l'utilisateur */
+	.user-avatar img {
+		margin-top: 8px;
+		margin-right: 12px;
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	/* Infos utilisateur sous les messages */
+	.user-info {
+		display: flex;
+		gap: 5px; /* Espace entre le nom et le nom d'utilisateur */
+		align-items: center; /* Aligne les éléments verticalement */
+		margin-top: 1px; /* Espace entre la bulle de message et les infos utilisateur */
+		color: #cbd5e0; /* Couleur des infos utilisateur */
+		font-size: 0.875rem; /* Taille de police */
+	}
+
+	.user-name {
+		color: white;
+		display: inline; /* Affiche sur une ligne séparée */
+	}
+
+	.user-username {
+		color: #718096;
+		display: block; /* Affiche sur une ligne séparée */
+	}
+
+	/* Pied de page du chat */
+	.chat-footer {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		background-color: #2d3748;
+		position: sticky;
+		bottom: 0;
+		z-index: 10;
+		border-top: 1px solid #4a5568;
+		height: 60px; /* Ajustez si nécessaire */
+	}
+
+	/* Formulaire de message */
+	.chat-form {
+		display: flex;
+		align-items: center; /* Centre l'input verticalement */
+		justify-content: center;
+		width: 98%; /* Largeur complète */
+		height: 100%; /* Hauteur complète */
+		margin-bottom: 0px;
+	}
+
+	/* Champ de texte */
+	.chat-form input {
+		width: 100%;
+		padding: 10px;
+		border-radius: 8px;
+		border: none;
+		outline: none;
+		background-color: #4a5568;
+		color: white;
+	}
+
+	.carouselle {
+		display: flex; /* Disposition horizontale des éléments */
+		list-style-type: none; /* Masquer les points des puces */
+		padding: 0; /* Supprimer le padding par défaut */
+		margin: 0; /* Supprimer le margin par défaut */
+	}
+
+	.carouselle li {
+		margin-right: 20px; /* Espacement entre les éléments */
+		color: white; /* Couleur du texte */
+	}
+</style>
+
+
+{% extends 'layouts/blank.html' %}
+
+{% block content %}
+
+<div class="chat-wrapper">
+	{% if chat_group.groupchat_name %}
+	<div class="container">
+		<div class="left-content">
+			<h2>{{ chat_group.groupchat_name }}</h2>
+		</div>
+		{% if user == chat_group.admin %}
+		<div class="right-content">
+			<a href="{% url 'edit-chatroom' chat_group.group_name %}">
+				<div class="p-2 bg-gray-200 hover:bg-blue-600 rounded-lg group">
+					<svg class="fill-gray-500 group-hover:fill-white" width="16" height="16">
+						<path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61Zm.176 4.823L9.75 4.81l-6.286 6.287a.253.253 0 0 0-.064.108l-.558 1.953 1.953-.558a.253.253 0 0 0 .108-.064Zm1.238-3.763a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354Z"></path>
+					</svg>
+				</div>
+			</a>
+		</div>
+		{% endif %}
+	</div>
+	{% endif %}	
+	
+	<div id="chat_window" class="chat-window">
+		<div class="chat-header">
+			{% if other_user %}
+			<span id="online-count" class="online-count"></span> online
+			<!-- <div id="online-icon"></div> -->
+			<a href="{% url 'profile' other_user.username %}">
+				<div class="user-profile" style="position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 8px; padding: 16px;">
+					<div class="user-avatar">
+						<img src="{{ other_user.profile.avatar }}" alt="User avatar">
+					</div>
+				</div>
+			</a>
+			{% elif chat_group.groupchat_name %}
+			<ul id="groupchat-members" class="carouselle">
+				{% for member in chat_group.members.all %}
+				<li>
+					<a href="{% url 'profile' member.username %}">
+						<div class="user-profile" style="position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 8px; padding: 16px;">
+							<div class="user-avatar">
+								<img src="{{ member.profile.avatar }}" alt="User avatar">
+							</div>
+						</div>
+					</a>
+					{{ member.profile.name|slice:":10" }}
+				</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+				<!-- <div id="online-icon"></div> -->
+				<span id="online-count" class="online-count"></span> online
+			{% endif %}
+		</div>
+		<div id='chat_container' class="chat-container">
+			<ul id='chat_messages' class="chat-messages">
+				{% for message in chat_messages reversed %}
+				{% include 'a_rtchat/chat_message.html' %}
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="chat-footer">
+			<form id="chat_message_form" class="chat-form" action="{% url 'home' %}" method="POST">
+				{% csrf_token %}
+				{{ form.body }}
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+
+	// Ouvre une connexion WebSocket
+	const socket = new WebSocket("/ws/chatroom/{{ chatroom_name }}");
+
+	// Écoute les événements de connexion WebSocket
+	socket.addEventListener("open", function(event) {
+		console.log("Connecté au serveur WebSocket.");
+	});
+
+	// Écoute les messages entrants et les affiche dans le chat
+	socket.addEventListener("message", function(event) {
+
+		const messageData = JSON.parse(event.data);
+		const messageHTML = messageData.content;
+	
+		console.log("socket message received type :", messageData.type);
+
+		if (messageData.type === "chat_message") {
+			console.log("message type chat_message");
+			const chatMessages = document.getElementById("chat_messages");
+			// Crée un nouvel élément de message
+			const newMessageElement = document.createElement("li");
+			newMessageElement.classList.add("fade-in-up"); // Ajoute la classe d'animation
+			newMessageElement.innerHTML = messageHTML; // Ajoute le contenu du message
+			// Insère le nouvel élément dans le conteneur des messages
+			chatMessages.appendChild(newMessageElement);
+			// Assurez-vous que la fonction de défilement est appelée après l'ajout
+			scrollToBottom();
+		}
+		else if (messageData.type === "online_count"){
+			const newOnlineCount = messageHTML; // Récupère le contenu du message
+			const oldOnlineCount = document.getElementById("online-count");
+			oldOnlineCount.outerHTML = newOnlineCount; // Ajoute le contenu du message
+			
+		}
+	});
+
+
+
+	// Envoie le message lorsque le formulaire est soumis
+	document.getElementById("chat_message_form").addEventListener("submit", function(event) {
+		event.preventDefault(); // Empêche le rechargement de la page
+		const messageInput = this.querySelector("input[name='body']");
+		const message = messageInput.value;
+
+		if (socket.readyState === WebSocket.OPEN) {
+			console.log("message sent", message);
+			socket.send(JSON.stringify({ body: message })); // Envoie le message via WebSocket
+			messageInput.value = ""; // Vide le champ de saisie
+		} else {
+			console.error("La connexion WebSocket n'est pas ouverte.");
+		}
+	});
+
+	// Gère la fermeture de la connexion WebSocket
+	socket.addEventListener("close", function(event) {
+		console.log("Connexion WebSocket fermée : ", event);
+	});
+
+	function scrollToBottom(time = 0) {
+		setTimeout(function() {
+			const container = document.getElementById('chat_container');
+			if (container) {
+				container.scrollTop = container.scrollHeight;
+			}
+		}, time);
+	}
+
+	// Appeler la fonction une fois lors du chargement de la page
+	scrollToBottom();
+
+
+
+</script>
+{% endblock %}

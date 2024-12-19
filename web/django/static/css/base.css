@@ -1,0 +1,87 @@
+a {
+	text-decoration: none;	/* Enlève le soulignement */
+	color: inherit;			/* Hérite de la couleur du texte parent */
+}
+
+
+html, body {
+	z-index: -1;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	font-family: Verdana, Geneva, sans-serif;
+	/* Dégradé radial sombre */
+	background: radial-gradient(circle, #171717, #1c1c1c);
+	/* Empêcher la répétition du dégradé */
+	background-repeat: no-repeat;
+	/* Faire en sorte que le dégradé couvre tout l'écran */
+	background-size: cover;
+	/* Centrer le dégradé (optionnel) */
+	background-position: center;
+	justify-content: center;
+	align-items: center;
+	color: var(--white1); /* Assure la lisibilité du texte */
+}
+
+.viewport {
+	display: flex;
+	flex-direction: column;
+	height: 100%; /* Conteneur principal prend toute la hauteur de la fenêtre */
+}
+
+header {
+	z-index: 3;
+	font-style: normal;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+.content {
+	z-index: 2;
+	flex-grow: 1; /* Prend tout l'espace restant */
+	padding: 0.25% 2% 1%; /* haut | horizontal | bas */
+	overflow: auto; /* Permet le défilement si le contenu dépasse */
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.content-box {
+	z-index: 2;
+	flex-grow: 1; /* Prend tout l'espace restant */
+	padding: 0.25% 2% 1%; /* haut | horizontal | bas */
+	overflow: auto; /* Permet le défilement si le contenu dépasse */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box
+}
+
+/* Fenêtre rectangulaire */
+.box {
+	max-width: 80%;
+	max-height: 80%;
+	border: 2px solid #d8d8d8; /* Bordure apparente */
+	box-shadow: 0 4px 8px rgba(58, 58, 58, 0.1); /* Ombre pour effet de relief */
+	overflow: auto; /* Permet le défilement si le contenu dépasse */
+	background: var(--black2);
+	padding: 2rem;
+	border-radius: 15px; /* Ajoute des coins arrondis */
+}
+
+.hidden {
+	display: none;
+}
+
+.horizontal-flex {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	/* text-align: left; */
+}

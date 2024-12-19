@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fruit Pong</title>
+	<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/colors.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/fonts.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/interact.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/users.css' %}">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/layouts/404.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/layouts/home.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/layouts/lobby.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/layouts/profile-edit.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/layouts/profile-settings.css' %}">
+
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/components/messages.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/components/images.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/components/chat.css' %}">
+
+
+
+	<link rel="stylesheet" type="text/css" href="{% static 'css/templates/header.css' %}">
+
+	<script src="{% static 'js/lobby-create.js' %}" defer></script>
+	<script src="{% static 'js/lobby-join.js' %}" defer></script>
+	<script src="{% static 'js/lobby.js' %}" defer></script>
+	<script src="{% static 'js/spa.js' %}" defer></script>
+
+	<!-- pixelated font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
+
+</head>
+<body class="{% block class %}{% endblock %}">
+	<div class="viewport">
+		{% include 'includes/messages.html' %}
+		{% include 'includes/header.html' %}
+		<img src="/static/images/fruits/strawberry.png" class="fruit-img strawberry-img" alt="a strawberry">
+		<img src="/static/images/fruits/orange.png" class="fruit-img orange-img" alt="an orange">
+		<img src="/static/images/fruits/blueberry.png" class="fruit-img blueberry-img" alt="a blueberry">
+		<img src="/static/images/fruits/banana.png" class="fruit-img banana-img" alt="a banana">
+		<img src="/static/images/fruits/apple.png" class="fruit-img apple-img" alt="an apple">
+		<img src="/static/images/fruits/pear.png" class="fruit-img pear-img" alt="a pear">
+		<img src="/static/images/fruits/fig.png" class="fruit-img fig-img" alt="a fig">
+	
+		<content class="content" id="spa-content">
+			{% block layout %}
+			{% endblock %}
+		</content>
+
+
+
+
+	</div>
+</body>
+</html>

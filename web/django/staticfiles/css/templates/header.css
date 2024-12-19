@@ -1,0 +1,103 @@
+/* logo and title */
+.logo-title {
+	display: flex;
+	align-items: center;
+	font-size: 30px;
+}
+
+.logo-title .logo {
+	width: 2em; /* La taille du logo sera relative à la taille du texte (titre) */
+	height: 2em; /* La hauteur du logo suit la largeur */
+	margin-right: 10px;
+}
+
+.logo-title h1 {
+	font-family: "Tiny5", sans-serif;
+	font-weight: 400;
+	font-size: clamp(16px, 5vh, 60px);
+	margin: 0;
+}
+
+
+header a {
+	color: white;
+	text-decoration: none;
+	font-size: 1rem; 
+}
+header a:hover {
+	color: #d1d5db; 
+}
+header a.flex {
+	display: flex;
+	align-items: center; 
+	gap: 0.5rem; 
+}
+
+
+/* header nav bar style */
+.navbar ul.navitems {
+	display: flex; /* Pour aligner les éléments horizontalement */
+	list-style: none; /* Supprime les puces */
+	padding: 0;
+	margin: 0;
+	gap: 1.5rem; /* Espace entre les éléments */
+}
+
+header .navelem {
+	display: flex;
+	align-items: center;
+}
+
+header .navelem a {
+	padding: 5px; /* Ajoute un peu d'espacement autour des liens */
+}
+
+header .navelem .separator {
+	color: white; /* Barre verticale blanche */
+	padding: 0 5px;
+	font-weight: bold;
+}
+
+/* Style du conteneur principal */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Conteneur pour aligner l'image et le texte */
+.dropdown-header {
+	display: flex;
+	align-items: center; /* Aligne verticalement l'image avec le texte */
+}
+
+/* Menu déroulant */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	transform: translateX(32px); /* Recentre complètement le menu */
+	/* min-width: 160px; */
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	border-radius: 4px; /* Ajoute des coins arrondis au menu */
+	padding: 5px;
+}
+
+/* Espacement et style des éléments du menu */
+.dropdown-content a {
+	color: black;
+	padding: 14px 20px; /* Augmente l'espacement entre les éléments */
+	text-decoration: none;
+	display: block;
+	font-size: 14px;
+}
+
+/* Montre le menu déroulant lors du survol */
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+/* Changement de couleur au survol */
+.dropdown-content a:hover {
+	background-color: #222222;
+}

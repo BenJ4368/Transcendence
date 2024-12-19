@@ -1,0 +1,21 @@
+<!-- Formulaire pour changer l'adresse email -->
+<form id="email-form" method="post" action="{% url 'profile-emailchange' %}">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit" class="btn btn-primary">Save</button>
+	<button type="button" class="btn btn-secondary" onclick="cancelEditEmail()">Cancel</button>
+</form>
+
+
+<!-- JavaScript pour gérer le comportement du formulaire et annulation -->
+<script>
+	document.getElementById('email-edit').addEventListener('click', function(event) {
+		event.preventDefault();
+		window.location.href = this.href; // Redirige vers la page de settings
+	});
+</script>
+
+<!-- CSS pour styliser le formulaire et les boutons -->
+<style>
+
+</style>

@@ -1,0 +1,54 @@
+/* Title Styling */
+.account-title {
+	margin-bottom: 2rem;
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+/* Table Styling */
+.account-table {
+	width: 100%;
+	font-size: 0.875rem;
+	text-align: left;
+	color: var(--white2);
+}
+
+/* Table Row Header */
+.account-row-header {
+	padding-top: 1rem;
+	padding-bottom: 0.25rem;
+	font-size: 1rem;
+	font-weight: bold;
+	color: var(--white1);
+}
+
+/* Data Cells */
+.account-data {
+	padding-top: 1rem;
+	padding-bottom: 0.25rem;
+	padding-left: 1rem;
+}
+
+/* Action Links */
+.account-action {
+	padding-top: 1rem;
+	padding-bottom: 0.25rem;
+	padding-left: 1rem;
+}
+
+.edit-link, .verify-link, .delete-link {
+	cursor: pointer;
+	font-weight: 500;
+	color: var(--fruit-blue);
+	text-decoration: none;
+}
+	
+	.edit-link:hover, .verify-link:hover, .delete-link:hover {
+	text-decoration: underline;
+}
+
+
+/* Bordered Row */
+.bordered-row {
+	border-bottom: 1px solid var(--white2);
+}

@@ -1,0 +1,86 @@
+{% extends 'layouts/box.html' %}
+{% load i18n %}
+{% load two_factor_tags %}
+
+{% block content %}
+
+<h1>Account Settings</h1>
+
+
+<table class="account-table">
+	<tbody>
+		<!-- Email Address Row -->
+		<tr class="bordered-row">
+			<th scope="row"  class="account-row-header">Email address</th>
+			<td id="email-address-display" class="account-data">{{ user.email }}</td>
+			<td class="account-action">
+				<a id="email-edit" class="edit-link" onclick="loadEmailForm()">Edit</a>
+			</td>
+		</tr>
+		
+		<!-- Conteneur pour le formulaire AJAX, masqué par défaut -->
+		<div id="email-form-container" class="hidden"></div>
+		
+		<!-- Email Verification Status Row -->
+		<tr class="bordered-row">
+			<th scope="row" class="account-row-header"></th>
+			<td class="account-data">
+				{% if user.emailaddress_set.first.verified %}
+				<span class="status-verified">Verified</span>{% else %}
+				<span class="status-not-verified">Not verified</span>
+				{% endif %}
+			</td>
+			<td class="account-action">
+				<a href="{% url 'profile-emailverify' %}" class="verify-link">
+					{% if not user.emailaddress_set.first.verified %}Verify{% endif %}
+				</a>
+			</td>
+		</tr>
+		
+		<!-- Delete Account Row -->
+		<tr class="bordered-row">
+			<th scope="row" class="account-row-header">
+				Delete Account
+			</th>
+			<td class="account-data">
+				Once deleted, account is gone. Forever.
+			</td>
+			<td class="account-action">
+				<a href="{% url 'profile-delete' %}" class="delete-link">
+					Delete
+				</a>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>
+
+{% if default_device %}
+<a href="{% url 'backup_tokens' %}">Show Backup Codes</a><br>
+<a href="{% url 'disable_2fa' %}">Disable Two-Factor Authentication</a>
+{% else %}
+<a href="{% url 'setup_2fa' %}">Enable Two-Factor Authentication</a>
+{% endif %}
+
+<!-- Script to replace HTMX behavior with JavaScript -->
+<script>
+	function loadEmailForm() {
+		const container = document.getElementById('email-address-display');
+		
+		// Requête AJAX pour charger le formulaire
+		fetch("{% url 'profile-emailchange' %}", { headers: { "X-Requested-With": "XMLHttpRequest" } })
+			.then(response => response.text())
+			.then(html => {
+				container.innerHTML = html;  // Remplace le contenu
+			})
+			.catch(error => console.error('Error loading form:', error));
+	}
+
+	function cancelEditEmail() {
+		// Cache le formulaire et affiche l'email à la place
+		document.getElementById('email-address-display').innerHTML = "{{ user.email }}";
+		
+	}
+</script>
+
+{% endblock %}

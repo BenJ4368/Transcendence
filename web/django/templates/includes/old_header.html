@@ -1,0 +1,57 @@
+<header style="background-color: #1f2937; padding: 1rem 2rem;">
+	<a class="flex items-center gap-2" href="/">
+		<img class="h-6" src="/static/images/logo.svg" alt="Logo"/>
+		<span class="text-lg font-bold">Fruit Pong</span>
+	</a>
+	<nav>
+		<ul class="navitems">
+			{% if request.user.is_authenticated %}
+			<li class="navelem">
+				<div class="dropdown">
+					<div class="dropdown-header">
+						<a href="javascript:void(0)" class="username">chats</a>
+					</div>
+					<div class="dropdown-content">
+						<a href="{% url 'home' %}">Public Chat</a>
+						{% for chatroom in user.chat_groups.all %}
+						{% if chatroom.groupchat_name %}
+						<a href="{% url 'chatroom' chatroom.group_name %}">
+							{{ chatroom.groupchat_name|slice:":30" }}
+						</a>
+						{% endif %}
+						{% endfor %}
+						{% for chatroom in user.chat_groups.all %}
+							{% if chatroom.is_private %}
+								{% for member in chatroom.members.all %}
+									{% if member != user %}
+									<a href="{% url 'chatroom' chatroom.group_name %}">{{ member.profile.name }}</a>
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="dropdown">
+					<div class="dropdown-header">
+						<img class="profile-img" src="{{ user.profile.avatar }}">
+						<a href="javascript:void(0)" class="username">{{ user.profile.name }}</a>
+					</div>
+					<div class="dropdown-content">
+						<a href="{% url 'profile' %}">My Profile</a>
+						<a href="{% url 'profile-edit' %}">Edit Profile</a>
+						<a href="{% url 'new-groupchat' %}">Create Chat</a>
+						<a href="{% url 'profile-settings' %}">Settings</a>
+						<a href="{% url 'account_' %}">Log Out</a>
+					</div>
+				</div>
+
+			{% else %}
+			<li class="navelem">
+				<a href="{% url 'account_login' %}" class="login">Login</a>
+				<span class="separator">|</span>
+				<a href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}" class="signup">Signup</a>
+			</li>
+			{% endif %}
+		</ul>
+	</nav>
+</header>

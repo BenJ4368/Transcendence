@@ -1,0 +1,23 @@
+{% extends 'layouts/box.html' %}
+
+{% block content %}
+
+<div class="lobby-container" data-lobby-id="{{ lobby.lobby_id }}">
+<h1>{{ lobby.name }}</h1>
+{% include 'a_home/partials/players.html' %}
+
+
+<div class="horizontal-flex">
+	{% include 'a_home/partials/lobby_chat.html' %}
+
+	{% if user.username == lobby.admin.username %}
+	<button id="launch-game" class="button">Launch Game</button>
+	{% endif %}
+</div>
+
+</div>
+
+
+{% endblock %}
+
+

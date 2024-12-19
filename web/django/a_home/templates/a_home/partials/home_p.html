@@ -1,0 +1,20 @@
+{% extends 'layouts/blank.html' %}
+
+{% block content %}
+<div class="home-container ">
+
+	<a href="{% url 'new-lobby' %}" class="spa-link">
+		<button class="menuebutton full-space text-l" style="display: block;">Create Lobby</button>
+	</a>
+	
+	<a href="{% url 'join-lobby' %}" class="spa-link">
+		<button class="menuebutton full-space text-l" style="display: block;">Join Lobby</button>
+	</a>
+
+	<button class="menuebutton full-space text-l" style="display: block;">Solo Game</button>
+	
+	<button class="menuebutton full-space text-l" style="display: block;">Create Tournament</button>
+	
+</div>
+
+{% endblock %}

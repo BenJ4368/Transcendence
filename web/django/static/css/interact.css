@@ -1,0 +1,78 @@
+.button, button, [type='submit'], [type='button'] {
+
+	color: white;
+	background-color: var(--black2); 
+	border: 3px solid var(--fruit-blue);
+	font-weight: bold;
+	padding: 1rem 1.5rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	overflow: hidden; /* Assure que le contenu reste à l'intérieur des bords arrondis */
+	transition: all 0.3s ease-in-out;
+}
+
+.button:hover, button:hover, [type='submit']:hover, [type='button']:hover {
+	background-color: var(--fruit-blue);
+	color: var(--black1);
+}
+
+.button:active, button:active, [type='submit']:active, [type='button']:active {
+	transform: scale(0.95);
+}
+
+.button.disabled, button:disabled {
+    background-color: #d1d5db; /* Gris clair */
+    color: #9ca3af; /* Gris foncé */
+    cursor: not-allowed; /* Curseur non cliquable */
+    box-shadow: none;
+}
+
+.button.red {
+	border: 3px solid var(--fruit-red);
+	background-color: var(--black2);
+}
+.button.red:hover {
+	background-color: var(--fruit-red);
+	color: var(--black1);
+}
+
+.button.yellow {
+	border: 3px solid var(--fruit-yellow);
+	background-color: var(--black2);
+}
+.button.yellow:hover {
+	background-color: var(--fruit-yellow);
+	color: var(--black1);
+}
+
+.button.gray {
+background-color: var(--white3);
+color: var(--black3);
+border: none;
+margin-left: 10px;
+}
+
+.button.gray:hover {
+background-color: #90A4AE; 
+}
+
+.menuebutton {
+	margin-top: 10px; /* Espace entre les boutons */
+	padding: 10px 20px; /* Taille du bouton */
+	font-size: 32px; /* Taille de la police */
+	cursor: pointer; /* Change le curseur quand on passe dessus */
+	border: 3px solid var(--white1); /* Bordure visible */
+	background-color: var(--black1);
+	color: var(--white1);
+	border-radius: 5px; /* Coins arrondis */
+	transition: background-color 0.3s; /* Animation pour hover */
+}
+
+.menuebutton:hover {
+	background-color: var(--white1);
+	color: var(--black1);
+}
+  
+#launch-game {
+	float: right;
+}

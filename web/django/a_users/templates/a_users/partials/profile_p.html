@@ -1,0 +1,40 @@
+{% extends 'layouts/box.html' %}
+{% block content %}
+
+<div class="profile-container">
+	<img class="avatar large" src="{{ profile.avatar }}" />
+	<div class="profile-name">
+		<h1>{{ profile.name }}</h1>
+		<div class="username">@{{ profile.user.username }}</div>
+		{% if profile.info %}
+		<div class="profile-info">{{ profile.info|linebreaksbr }}</div>
+		{% endif %}
+
+		{% if profile.user != request.user %}
+			{% if request.user.profile in profile.friends.all %}
+				<p>Friends</p>
+			{% elif request.user.profile in profile.pending_request.all %}
+				<p>Waiting for you</p>
+			{% elif request.user.profile in profile.invite_request.all %}
+				<p>Invite send</p>
+			{% else %}
+				<a href="{% url 'send_friend_request' profile.user.username %}">Send an friend request</a>
+			{% endif %}	
+		{% else %}
+			<a href="{% url 'friends' 'true_relations' %}">Friends</a>
+		{% endif %}
+	</div>
+	{% if profile.info %}
+	<div class="profile-info">
+		<div style="padding-bottom: 3px;">profile informations :</div>
+		<div style="font-style: italic;">{{ profile.info|linebreaksbr }}</div>
+	</div>
+	{% endif %}
+</div>
+
+{% endblock %}
+
+
+<!-- {% if profile.user != user %}
+<a class="button" href="{% url 'start-chat' profile.user.username %}">Chat with me</a>
+{% endif %} -->
