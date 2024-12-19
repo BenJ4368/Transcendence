@@ -1,5 +1,6 @@
 web/.env
-web/django/tls
+web/django/tls/vault.cert
+web/django/tls/vault.key
 
 vault/.env
 vault/config/tls
