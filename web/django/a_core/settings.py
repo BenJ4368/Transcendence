@@ -119,16 +119,16 @@ CHANNEL_LAYERS = {
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-vault_client = hvac.Client(url=os.environ.get("VAULT_ADDR"), cert=(os.environ.get("VAULT_TLS_CERT"), os.environ.get("VAULT_TLS_KEY")), verify=False)
+VAULT_CLIENT = hvac.Client(url=os.environ.get("VAULT_ADDR"), cert=(os.environ.get("VAULT_TLS_CERT"), os.environ.get("VAULT_TLS_KEY")), verify=False)
 
 vault_role_id = os.environ.get("VAULT_ROLE_ID")
 vault_secret_id = os.environ.get("VAULT_SECRET_ID")
 
-vault_auth_response = vault_client.auth.approle.login(role_id=vault_role_id, secret_id=vault_secret_id)
-vault_client.token = vault_auth_response['auth']['client_token']
+vault_auth_response = VAULT_CLIENT.auth.approle.login(role_id=vault_role_id, secret_id=vault_secret_id)
+VAULT_CLIENT.token = vault_auth_response['auth']['client_token']
 
-postgres_user = vault_client.secrets.kv.read_secret_version(path='POSTGRES_USER', mount_point='kv')['data']['data']['value']
-postgres_password = vault_client.secrets.kv.read_secret_version(path='POSTGRES_PASSWORD', mount_point='kv')['data']['data']['value']
+postgres_user = VAULT_CLIENT.secrets.kv.read_secret_version(path='POSTGRES_USER', mount_point='kv')['data']['data']['value']
+postgres_password = VAULT_CLIENT.secrets.kv.read_secret_version(path='POSTGRES_PASSWORD', mount_point='kv')['data']['data']['value']
 
 DATABASES = {
     'default': {

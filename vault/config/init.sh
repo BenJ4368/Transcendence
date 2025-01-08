@@ -45,11 +45,9 @@ is_init() {
     fi
 }
 
-# Usealing vault using unseal keys
+# Function to unseal Vault
 unseal_vault() {
-    echo "Unsealing Vault..."
-    unseal_keys=$(cat "$UNSEAL_KEYS_FILE" | jq -r '.[]')
-    for key in $unseal_keys; do
+    for key in $(cat "$UNSEAL_KEYS_FILE" | jq -r '.[]'); do
         vault operator unseal "$key"
         if [ $? -ne 0 ]; then
             echo "Failed to unseal Vault with key: $key"
@@ -59,13 +57,20 @@ unseal_vault() {
     echo "Vault unsealed."
 }
 
-# Initializing vault; generates 1 unseal key, 1 root token and saves them in their file.
+# Function to add secrets to Vault
+add_secret() {
+    local secret=$1
+    local value=$2
+    vault kv put "kv/$secret" value="$value"
+}
+
+# Initializing Vault; generates 1 unseal key, 1 root token and saves them in their file.
 init_vault() {
     echo "Generating TLS certificates..."
     echo "Initializing Vault..."
     init_output=$(vault operator init -format=json -key-shares=1 -key-threshold=1)
     sleep 3
-    if [ $? -ne 0 ]; then # command output value -NotEqual to 0
+    if [ $? -ne 0 ]; then
         echo "Failed to initialize Vault."
         exit 1
     fi
@@ -80,7 +85,7 @@ init_vault() {
     vault secrets enable -version=2 kv
     for secret in $SECRETS; do
         value=$(printenv "$secret")
-        if [ -n "$value" ]; then # if value is not empty
+        if [ -n "$value" ]; then
             add_secret "$secret" "$value"
         else
             echo "Environment variable '$secret' is not set. Skipping..."
@@ -99,9 +104,6 @@ init_vault() {
     echo "VAULT_SECRET_ID=$DJANGO_SECRET_ID" >> /django/.env
     echo "VAULT_ROLE_ID=$DJANGO_ROLE_ID"
     echo "VAULT_SECRET_ID=$DJANGO_SECRET_ID"
-
-    # django_token=$(vault token create -policy=django-policy -format=json | jq -r '.auth.client_token')
-    # echo "$django_token" > "$DJANGO_TOKEN_FILE"
 }
 
 # Main logic; if vault init, unseal; if vault not init, init then unseal;
@@ -109,9 +111,8 @@ if is_init; then
     echo "Vault is initialized. Attempting to unseal..."
     if [ -f "$UNSEAL_KEYS_FILE" ] && [ -f "$ROOT_TOKEN_FILE" ]; then
         unseal_vault
-        vault auth list
     else
-        echo "Error: Unseal keys or root token file not found. Cannot proceed with unsealing."
+        echo "Unseal keys or root token file not found."
         exit 1
     fi
 else

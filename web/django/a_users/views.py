@@ -6,6 +6,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
+from django.conf import settings
 from .forms import *
 from .models import Relation
 from django.db.models import Q # For search user with query
@@ -18,7 +19,9 @@ import qrcode
 from io import BytesIO
 from base64 import b64encode
 from django_otp.plugins.otp_static.models import StaticDevice, StaticToken
+import hvac
 
+vault_client = settings.VAULT_CLIENT
 
 def register(request):
 	if request.method == 'POST':
@@ -36,8 +39,26 @@ def register(request):
 			return render(request, 'register.html', {'form': form})
 
 		user = User.objects.create_user(username=username, email=email)
-		user.set_password(password)
+		user.set_unusable_password() # On ne stocke pas le mdp en bdd simple.
 		user.save()
+
+		# Stocker le mot de passe dans Vault
+		try:
+			vault_client.secrets.kv.v2.create_or_update_secret(
+				path=f'users/{username}',
+				secret={'password': password},
+				mount_point='kv'
+			)
+		except hvac.exceptions.Forbidden as e:
+			error_message = f'Permission denied: cannot store password in Vault. Details: {str(e)}'
+			messages.error(request, error_message)
+			user.delete()  # Supprime l'utilisateur créé si le stockage du mot de passe échoue
+			return render(request, 'register.html', {'form': form})
+		except hvac.exceptions.InvalidPath as e:
+			error_message = f'Invalid path: cannot store password in Vault. Details: {str(e)}'
+			messages.error(request, error_message)
+			user.delete()  # Supprime l'utilisateur créé si le stockage du mot de passe échoue
+			return render(request, 'register.html', {'form': form})
 
 		return redirect('login')
 
@@ -173,24 +194,30 @@ def login_2fa(request):
 
 			username = request.POST.get('username')
 			password = request.POST.get('password')
-			user = authenticate(request, username=username, password=password)
 
-			if user is not None:
+			#recuperation du mot de passe depuis Vault
+			try:
+				stored_password = vault_client.secrets.kv.read_secret_version(path=f'users/{username}',mount_point='kv')['data']['data']['password']
+			except Exception as e:
+				error_message = f'Error retrieving password from Vault. Details: {str(e)}'
+				messages.error(request, error_message)
+				return render(request, 'a_two_factor/login.html', {'step':step})
+
+			if password == stored_password:
+				user = User.objects.get(username=username)
 				try:
 					device = TOTPDevice.objects.get(user=user, confirmed=True)
 				except TOTPDevice.DoesNotExist:
 					login(request, user)
 					return redirect('/')
-
+				
 				step = "part2"
 				request.session["temp_user_id"] = user.id
 				return render(request, 'a_two_factor/login.html', {'step':step})
-			
 			else:
-				messages.error(request, 'Wrong password or username. Please try again.')
+				messages.error(request, 'Wrong credentials. Please try again.')
 
 		elif "otp_token" in request.POST:
-
 			user_id = request.session.get("temp_user_id")
 			user = User.objects.get(id=user_id)
 			device = TOTPDevice.objects.get(user=user, confirmed=True)
