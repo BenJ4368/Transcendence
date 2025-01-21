@@ -76,3 +76,5 @@ Un peu de configuration pour les connexions avec **PostgreSQL**, **Redis** et **
 Ce container **Web** se trouve dans les 3 réseaux précédents. Il peut donc communiquer avec tous les containers dans leurs réseaux respectifs.
 
 ### L'application Django et le serveur Daphne se trouvent dans le même container. Il se lance lorsque Vault-init a terminé de déverrouiller Vault. Le container Nginx se lance juste après.
+
+(.env files: postgresql/.env, web/.env, vault/.env)

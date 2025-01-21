@@ -35,14 +35,14 @@ clean: #Stops and remove all containers volumes and networks
 
 iclean: #Removes all images
 	@echo "$(RED)!!!=== Do you really want to remove all images ?$(STOP)"
-	@read -p "Confirmez (y/n) : " confirm && [ "$$confirm" = "y" ] || (echo "$(YEL)Abandonné.$(STOP)" && exit 1)
+	@read -p "Confirm (y/n) : " confirm && [ "$$confirm" = "y" ] || (echo "$(YEL)Aborted.$(STOP)" && exit 1)
 	@echo "$(CYA)=== Cleaning images...$(STOP)"
 	@sudo docker rmi $$(sudo docker images -qa);
 
 
 fclean: #Removes all files contained in the volumes
-	@echo "$(RED)!!!=== Do you really want to remove all data ?\n$(YEL) /!\ This will delete all peristed data (keys, users, scores...) /!\ $(STOP)"
-	@read -p "Confirmez (y/n) : " confirm && [ "$$confirm" = "y" ] || (echo "$(YEL)Abandonné.$(STOP)" && exit 1)
+	@echo "$(RED)!!!=== Do you really want to remove all data ?\n$(YEL) /!\ This will delete all persisted data (keys, users, scores...) /!\ $(STOP)"
+	@read -p "Confirm (y/n) : " confirm && [ "$$confirm" = "y" ] || (echo "$(YEL)Aborted.$(STOP)" && exit 1)
 	@echo "$(CYA)=== Cleaning data...$(STOP)"
 	@sudo rm -rf postgresql/data vault/volume/* vault/config/root-token vault/config/unseal-keys.json vault/config/tls/* web/django/tls/*
 	@sed -i '/^VAULT_ROLE_ID=/d' web/.env
